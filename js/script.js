@@ -127,7 +127,8 @@ function HamburgerException(message) {
 }
 
 try {
-   /* // маленький гамбургер с начинкой из сыра
+   /* 
+   // маленький гамбургер с начинкой из сыра
     var hamburger = new Hamburger(Hamburger.SIZE_LARGE, Hamburger.STUFFING_POTATO);
     // var hamburger = new Hamburger(Hamburger.SIZE_SMALL, Hamburger.STUFFING_CHEESE);
     // добавка из майонеза
