@@ -2,6 +2,11 @@
 
 
 function Hamburger(size, stuffing) {
+
+    this.size = size;
+    this.stuffing = stuffing;
+    this.toppings = [];
+
     if (!arguments['0']) {
         throw new HamburgerException('no size given');
     }
@@ -17,23 +22,19 @@ function Hamburger(size, stuffing) {
     if (stuffing.category !== 'stuffing') {
         throw new HamburgerException('invalid stuffing ' + stuffing.name);
     }
-
-    this.size = size
-    this.stuffing = stuffing
-    this.toppings = []
 }
 
 Hamburger.SIZE_SMALL = {
     price: 50,
     calories: 20,
     category: 'size',
-    name: 'SIZE_SMALL'
+    name: 'SIZE_SMALL',
 }
 Hamburger.SIZE_LARGE = {
     price: 100,
     calories: 40,
     category: 'size',
-    name: 'SIZE_LARGE'
+    name: 'SIZE_LARGE',
 }
 
 // начинки
@@ -76,7 +77,7 @@ Hamburger.TOPPING_SPICE = {
 Hamburger.prototype.getSize = function () {
     return this.size
 }
-Hamburger.prototype.getStuffing = function (){
+Hamburger.prototype.getStuffing = function () {
     return this.stuffing
 }
 
@@ -84,9 +85,9 @@ Hamburger.prototype.calculatePrice = function () {
     if (this.toppings.length) {
         var totalToppinsPrice = this.toppings.reduce(function (acc, item) {
             return acc + item.price
-        }, 0)
-        this.price = this.size.price + this.stuffing.price + totalToppinsPrice
-    } else this.price = this.size.price + this.stuffing.price
+        }, 0);
+        this.price = this.size.price + this.stuffing.price + totalToppinsPrice;
+    } else this.price = this.size.price + this.stuffing.price;
     return this.price;
 }
 
@@ -94,9 +95,9 @@ Hamburger.prototype.calculateCalories = function () {
     if (this.toppings.length) {
         var totalToppinsCalories = this.toppings.reduce(function (acc, item) {
             return acc + item.calories
-        }, 0)
-        this.calories = this.size.calories + this.stuffing.calories + totalToppinsCalories
-    } else this.calories = this.size.calories + this.stuffing.calories
+        }, 0);
+        this.calories = this.size.calories + this.stuffing.calories + totalToppinsCalories;
+    } else this.calories = this.size.calories + this.stuffing.calories;
     return this.calories;
 }
 
@@ -112,7 +113,7 @@ Hamburger.prototype.removeTopping = function (topping) {
     if (this.toppings.includes(topping)) {
         this.toppings = this.toppings.filter(function (item) {
             return item !== topping
-        })
+        });
     } else throw new HamburgerException('Can not remove a non-existent topping ' + topping.name);
 
 }
@@ -127,12 +128,14 @@ function HamburgerException(message) {
 }
 
 try {
-   /* 
-   // маленький гамбургер с начинкой из сыра
+
+    /* 
+    // маленький гамбургер с начинкой из сыра
     var hamburger = new Hamburger(Hamburger.SIZE_LARGE, Hamburger.STUFFING_POTATO);
     // var hamburger = new Hamburger(Hamburger.SIZE_SMALL, Hamburger.STUFFING_CHEESE);
     // добавка из майонеза
     hamburger.addTopping(Hamburger.TOPPING_MAYO);
+    // hamburger.addTopping(Hamburger.TOPPING_MAYO);
     // console.log("Calories: %f", hamburger.calculateCalories());
     // console.log("Price: %f", hamburger.calculatePrice());
     // hamburger.removeTopping(Hamburger.TOPPING_MAYO);
@@ -151,7 +154,8 @@ try {
     // Убрать добавку
     hamburger.removeTopping(Hamburger.TOPPING_SPICE);
     console.log("Have %d toppings", hamburger.getToppings().length); // 1
-*/
+
+    */
     /*
         // не передали обязательные параметры
         var h2 = new Hamburger(); // => HamburgerException: no size given
