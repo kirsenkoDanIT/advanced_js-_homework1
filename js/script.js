@@ -127,7 +127,7 @@ function HamburgerException(message) {
 }
 
 try {
-    // маленький гамбургер с начинкой из сыра
+   /* // маленький гамбургер с начинкой из сыра
     var hamburger = new Hamburger(Hamburger.SIZE_LARGE, Hamburger.STUFFING_POTATO);
     // var hamburger = new Hamburger(Hamburger.SIZE_SMALL, Hamburger.STUFFING_CHEESE);
     // добавка из майонеза
@@ -150,7 +150,7 @@ try {
     // Убрать добавку
     hamburger.removeTopping(Hamburger.TOPPING_SPICE);
     console.log("Have %d toppings", hamburger.getToppings().length); // 1
-
+*/
     /*
         // не передали обязательные параметры
         var h2 = new Hamburger(); // => HamburgerException: no size given
