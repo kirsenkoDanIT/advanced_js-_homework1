@@ -2,13 +2,16 @@
 
 
 function Hamburger(size, stuffing) {
+
+
     try {
         if (!arguments['0']) {
             throw new HamburgerException('no size given');
         }
 
         if (size.category !== 'size') {
-            throw new HamburgerException('invalid size ' + size.name);
+            var sizeError = size.name || arguments['0']
+            throw new HamburgerException('invalid size ' + sizeError);
         }
 
         if (!arguments['1']) {
@@ -16,7 +19,8 @@ function Hamburger(size, stuffing) {
         }
 
         if (stuffing.category !== 'stuffing') {
-            throw new HamburgerException('invalid stuffing ' + stuffing.name);
+            var stuffingError = stuffing.name || arguments['1']
+            throw new HamburgerException('invalid stuffing ' + stuffingError);
         }
     } catch (e) {
         console.log(e.name, e.message);
@@ -79,72 +83,105 @@ Hamburger.TOPPING_SPICE = {
 // методы
 
 Hamburger.prototype.getSize = function () {
-    return this.size
+    return this.size;
 }
 Hamburger.prototype.getStuffing = function () {
-    return this.stuffing
+    return this.stuffing;
 }
 
 Hamburger.prototype.calculatePrice = function () {
-    if (this.toppings.length) {
-        var totalToppinsPrice = this.toppings.reduce(function (acc, item) {
-            return acc + item.price
-        }, 0);
+
+    try {
+        if (!this.size || !this.stuffing || this.size.category !== 'size' || this.stuffing.category !== 'stuffing') {
+            throw new HamburgerException('nothing to calc, invalid size/stuffing');
+        }
+
+    } catch (e) {
+        console.log(e.name, e.message);
+    }
+
+    var totalToppinsPrice = this.toppings.reduce(function (acc, item) {
+        return acc + item.price
+    }, 0) || 0;
+
+    if (this.size && this.stuffing) {
         this.price = this.size.price + this.stuffing.price + totalToppinsPrice;
-    } else this.price = this.size.price + this.stuffing.price;
+    }
+
+    if (!this.price) {
+        this.price = 0;
+    }
+
     return this.price;
 }
 
 Hamburger.prototype.calculateCalories = function () {
-    if (this.toppings.length) {
-        var totalToppinsCalories = this.toppings.reduce(function (acc, item) {
-            return acc + item.calories
-        }, 0);
+
+    try {
+        if (!this.size || !this.stuffing || this.size.category !== 'size' || this.stuffing.category !== 'stuffing') {
+            throw new HamburgerException('nothing to calc, invalid size/stuffing');
+        }
+
+    } catch (e) {
+        console.log(e.name, e.message);
+    }
+
+    var totalToppinsCalories = this.toppings.reduce(function (acc, item) {
+        return acc + item.calories
+    }, 0) || 0;
+
+    if (this.size && this.stuffing) {
         this.calories = this.size.calories + this.stuffing.calories + totalToppinsCalories;
-    } else this.calories = this.size.calories + this.stuffing.calories;
+    }
+
+    if (!this.calories) {
+        this.calories = 0;
+    }
+
     return this.calories;
+
 }
 
 Hamburger.prototype.addTopping = function (topping) {
-    if (!topping || topping.category !== 'topping' || arguments.length > 1) {
-        try {
+    try {
+        if (!this.size || !this.stuffing) {
+            throw new HamburgerException('can not add topping, no size/stuffing given');
+        }
+        if (!topping || topping.category !== 'topping') {
             throw new HamburgerException('invalid topping!');
-        } catch (e) {
-            console.log(e.name, e.message);
         }
-    } else
-
-    if (!this.toppings.includes(topping)) {
-        this.toppings.push(topping)
-    } else
-
-        try {
+        if (this.toppings.includes(topping)) {
             throw new HamburgerException('duplicate topping ' + topping.name);
-        } catch (e) {
-            console.log(e.name, e.message);
-        }
+        };
+    } catch (e) {
+        console.log(e.name, e.message);
+    }
+
+    if (this.size && this.stuffing && topping && topping.category === 'topping' &&
+        !this.toppings.includes(topping)) {
+        this.toppings.push(topping)
+    }
 }
 
 Hamburger.prototype.removeTopping = function (topping) {
-    if (!topping || topping.category !== 'topping' || arguments.length > 1) {
-        try {
+
+    try {
+        if (!this.size || !this.stuffing) {
+            throw new HamburgerException('can not remove topping, no size/stuffing given');
+        }
+        if (!topping || topping.category !== 'topping') {
             throw new HamburgerException('invalid topping!');
-        } catch (e) {
-            console.log(e.name, e.message);
         }
-    } else
-
-    if (this.toppings.includes(topping)) {
-        this.toppings = this.toppings.filter(function (item) {
-            return item !== topping
-        });
-    } else
-
-        try {
+        if (!this.toppings.includes(topping)) {
             throw new HamburgerException('Can not remove a non-existent topping ' + topping.name);
-        } catch (e) {
-            console.log(e.name, e.message);
-        }
+        };
+    } catch (e) {
+        console.log(e.name, e.message);
+    }
+
+    this.toppings = this.toppings.filter(function (item) {
+        return item !== topping
+    });
 
 }
 
@@ -162,34 +199,33 @@ function HamburgerException(message) {
 
 // маленький гамбургер с начинкой из сыра
 var hamburger = new Hamburger(Hamburger.SIZE_LARGE, Hamburger.STUFFING_POTATO);
-console.log("Calories: %f", hamburger.calculateCalories());
-console.log("Price: %f", hamburger.calculatePrice());
+// console.log("Calories: %f", hamburger.calculateCalories());
+// console.log("Price: %f", hamburger.calculatePrice());
 // var hamburger = new Hamburger();
 // добавка из майонеза
 hamburger.addTopping(Hamburger.TOPPING_MAYO);
-hamburger.addTopping(Hamburger.TOPPING_MAYO);
+// hamburger.addTopping(Hamburger.TOPPING_MAYO);
+// hamburger.removeTopping(Hamburger.TOPPING_MAYO);
 hamburger.addTopping(1);
 hamburger.addTopping();
 hamburger.addTopping(Hamburger.STUFFING_POTATO);
-hamburger.addTopping(Hamburger.TOPPING_MAYO, Hamburger.TOPPING_MAYO);
-hamburger.removeTopping(Hamburger.STUFFING_POTATO);
-console.log("Calories: %f", hamburger.calculateCalories());
-console.log("Price: %f", hamburger.calculatePrice());
+// hamburger.removeTopping(Hamburger.STUFFING_POTATO);
 // спросим сколько там калорий
-// console.log("Calories: %f", hamburger.calculateCalories());
+console.log("Calories: %f", hamburger.calculateCalories());
 // сколько стоит
-// console.log("Price: %f", hamburger.calculatePrice());
+console.log("Price: %f", hamburger.calculatePrice());
 // я тут передумал и решил добавить еще приправу
 hamburger.addTopping(Hamburger.TOPPING_SPICE);
 // А сколько теперь стоит? 
 console.log("Price with sauce: %f", hamburger.calculatePrice());
 // Проверить, большой ли гамбургер? 
-console.log("Is hamburger large: %s", hamburger.getSize() === Hamburger.SIZE_LARGE); // -> false
-console.log("This size is %s", hamburger.getSize().name); // -> false
-console.log("This stuffing is %s", hamburger.getStuffing().name);
+console.log("Is hamburger large: %s", hamburger.getSize() === Hamburger.SIZE_LARGE);
+// console.log("Is hamburger small: %s", hamburger.getSize() === Hamburger.SIZE_SMALL);
+console.log("Is stuffing potato: %s", hamburger.getStuffing() === Hamburger.STUFFING_POTATO);
+
 // Убрать добавку
 hamburger.removeTopping(Hamburger.TOPPING_SPICE);
-console.log("Have %d toppings", hamburger.getToppings().length); // 1
+console.log("Have %d toppings", hamburger.getToppings().length);
 
 
 
