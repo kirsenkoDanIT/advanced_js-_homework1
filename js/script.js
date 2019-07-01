@@ -156,11 +156,6 @@ Hamburger.prototype.addTopping = function (topping) {
     } catch (e) {
         console.log(e.name, e.message);
     }
-
-    // if (this.size && this.stuffing && topping && topping.category === 'topping' &&
-    //     !this.toppings.includes(topping)) {
-    //     this.toppings.push(topping)
-    // }
 }
 
 Hamburger.prototype.removeTopping = function (topping) {
