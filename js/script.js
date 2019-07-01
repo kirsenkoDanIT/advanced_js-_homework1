@@ -146,21 +146,21 @@ Hamburger.prototype.addTopping = function (topping) {
     try {
         if (!this.size || !this.stuffing) {
             throw new HamburgerException('can not add topping, no size/stuffing given');
-        }
+        } else
         if (!topping || topping.category !== 'topping') {
             throw new HamburgerException('invalid topping!');
-        }
+        } else
         if (this.toppings.includes(topping)) {
             throw new HamburgerException('duplicate topping ' + topping.name);
-        };
+        } else this.toppings.push(topping)
     } catch (e) {
         console.log(e.name, e.message);
     }
 
-    if (this.size && this.stuffing && topping && topping.category === 'topping' &&
-        !this.toppings.includes(topping)) {
-        this.toppings.push(topping)
-    }
+    // if (this.size && this.stuffing && topping && topping.category === 'topping' &&
+    //     !this.toppings.includes(topping)) {
+    //     this.toppings.push(topping)
+    // }
 }
 
 Hamburger.prototype.removeTopping = function (topping) {
